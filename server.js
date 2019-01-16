@@ -21,15 +21,37 @@ app.get('/db/start', function (req, res) {
 })
 // route select
 app.get('/db/select', function (req, res) {
-    select(req, res)
+    var tblName = "students"
+    select(req, res, tblName)
 })
 // route insert
 app.get('/db/insert', function (req, res) {
-    insert(req, res)
+    var tblName = "students"
+    var obj = {name: 'student D', class: '10-05', age: '31'}
+    insert(req, res, tblName, obj)
 })
 // route delete
 app.get('/db/delete', function (req, res) {
-    remove(req, res)
+
+    if (typeof req.query.id === "undefined" || req.query.id === "") {
+        res.send('Please input id delete');
+    } else {
+        var tblName = ' students' +' WHERE id = '+ req.query.id
+        remove(req, res, tblName)
+    }
+})
+// route update
+app.get('/db/update', function (req, res) {
+
+    if (typeof req.query.id === "undefined" || req.query.id === "") {
+        res.send('Please input id update');
+    } else {
+        var tblName = ' students'
+        var where = " SET  name = ?, class = ?,age = ? WHERE id = ?"
+        var arrayValue = ['Student update 1', 'class 19-01', 25, req.query.id]
+
+        update(req, res, tblName, where, arrayValue)
+    }
 })
 
 
@@ -47,14 +69,14 @@ const connection = mysql.createConnection({
 connection.connect()
 
 //select database
-function select(req, res) {
+function select(req, res, tblName) {
 
-    connection.query('SELECT * from students', function (err, rows, fields) {
+    connection.query('SELECT * from ' + tblName, function (err, rows, fields) {
         if (err) throw err
         
         const copy = [];
         var isFirstLine = true;
-        copy.push("<h1>List data table</h1>")
+        copy.push("<h1>List data table: "+tblName+"</h1>")
         copy.push("<table>")
 
         rows.forEach(function(element) {
@@ -83,27 +105,32 @@ function select(req, res) {
 }
 
 //insert database
-function insert(req, res) {
+function insert(req, res, tblName, obj) {
 
-    connection.query('INSERT INTO students SET ?', {name: 'student D', class: '10-05', age: '31'}, function (error, results, fields) {
+    connection.query('INSERT INTO '+tblName+' SET ?', obj, function (error, results, fields) {
         if (error) throw error;
         res.send('Insert done! Id: '+ results.insertId);
     });
 }
 
-//delete database
-function remove(req, res) {
-    //console.log(req.query.id)
-    //if(req.params.id)
-    if (typeof req.query.id === "undefined" || req.query.id === "") {
-        res.send('Please input id delete');
-    } else {
-        connection.query('DELETE FROM students WHERE id = '+ req.query.id, function (error, results, fields) {
-            if (error) throw error;
-            res.send('Delete done! rows: '+ results.affectedRows);
-        })
-    }
+//update database
+function update(req, res, tblName, where, arrayValue) {
+ 
+    connection.query('UPDATE ' + tblName + where, arrayValue, function (error, results, fields) {
+        if (error) throw error;
+        res.send('Update done! ');
+    });
 }
+
+//delete database
+function remove(req, res, tblName) {
+
+    connection.query('DELETE FROM '+tblName, function (error, results, fields) {
+        if (error) throw error;
+        res.send('Delete done! rows: '+ results.affectedRows);
+    });
+}
+
 
 
 
