@@ -22,9 +22,15 @@ app.get('/db/start', function (req, res) {
 // route select
 app.get('/db/select', function (req, res) {
     select(req, res)
-    //express.static('samples/docs/select.html')
 })
-
+// route insert
+app.get('/db/insert', function (req, res) {
+    insert(req, res)
+})
+// route delete
+app.get('/db/delete', function (req, res) {
+    remove(req, res)
+})
 
 
 
@@ -76,7 +82,28 @@ function select(req, res) {
     })
 }
 
+//insert database
+function insert(req, res) {
 
+    connection.query('INSERT INTO students SET ?', {name: 'student D', class: '10-05', age: '31'}, function (error, results, fields) {
+        if (error) throw error;
+        res.send('Insert done! Id: '+ results.insertId);
+    });
+}
+
+//delete database
+function remove(req, res) {
+    //console.log(req.query.id)
+    //if(req.params.id)
+    if (typeof req.query.id === "undefined" || req.query.id === "") {
+        res.send('Please input id delete');
+    } else {
+        connection.query('DELETE FROM students WHERE id = '+ req.query.id, function (error, results, fields) {
+            if (error) throw error;
+            res.send('Delete done! rows: '+ results.affectedRows);
+        })
+    }
+}
 
 
 
