@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="../js/jquery-3.3.1.js"></script>
+<link rel="stylesheet" href="../css/style.css" type="text/css" />
+<script>
+$(document).ready(function(){
+  $("#customers .edit").dblclick(function(){
+    // hide div data
+    $(this).children("label").hide();
+    // show input item
+    $(this).children("input,select").show();//css("display","block");
+  });
+  
+  
+ 
+});
+</script>
+<style>
+
+#customers input,select {
+  display: none;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Sample update multi</h2>
+
+
+<form method="GET" action="/docs/insert">
+<table id="customers">
+    <col width="10%">
+    <col width="30%">
+    <col width="30%">
+    <col width="30%">
+  <tr>
+    <th>STT</th>
+    <th>Name</th>
+    <th>Class</th>
+    <th>Age</th>
+  </tr>
+  <tr>
+    <td>1<input name="id[0]" value="1001"/></td>
+    <td class="edit"><label>Name A</label><input name="name[0]" value="Name A"/></td>
+    <td class="edit"><label>18-04</label><select name="class[0]">
+      <option value="1" selected="selected">18-04</option>
+      <option value="2">18-05</option>
+      <option value="3">19-01</option></select></td>
+    <td class="edit"><label>19</label><input name="age[0]" value="19"/></td>
+  </tr>
+  <tr>
+    <td>2<input name="id[1]" value="1002"/></td>
+    <td class="edit"><label>Name B</label><input name="name[1]" value="Name B"/></td>
+    <td class="edit"><label>19-01</label><select name="class[1]">
+        <option value="1">18-04</option>
+        <option value="2">18-05</option>
+        <option value="3" selected="selected">19-01</option></select></td>
+    <td class="edit"><label>20</label><input name="age[1]" value="20"/></td>
+  </tr>
+  <tr>
+      <td>+<input name="id[2]" value=""/></td>
+      <td class="edit"><input name="name[2]" value=""/></td>
+      <td class="edit"><select name="class[2]">
+          <option value="1">18-04</option>
+          <option value="2">18-05</option>
+          <option value="3">19-01</option></select></td>
+      <td class="edit"><input name="age[2]" value=""/></td>
+    </tr>
+  
+</table>
+
+<div><input type="submit" value="Save" /></div>
+</form>
+
+<br />
+<br />
+
+<!--
+Mục đích: 
+- Làm sao có thể update hàng loạt các data tương tự như excel
+
+Ý tưởng:
+- Chúng ta có 1 list data, 1 row là 1 đối tượng tương ứng. Trong 1 đối tượng thì sẽ có nhiều trường tương ứng với cột ở trong table.
+- Với mỗi trường đó, ta sẽ cần tạo ra 2 item :
+  + 1 item dùng để hiển thị ví như là thẻ div,p, label ,.... Không thể chỉnh sửa được dữ liệu
+  + 1 item dùng để input ví như là thẻ input,select ,....
+
+- Lúc khởi tạo ban đầu thì chúng ta sẽ cho ẩn tất cả các item có thể input được.
+- Giá trị của các item khi khởi tạo thì item hiển thị và không hiển thị thì giống nhau.
+- Khi người dùng click(or doubleclick) vào vùng muốn chỉnh sửa thì ta thay đổi item được hiển thị.Item chỉ display thì cho ẩn đi và thay vào đó là item có thể input được.
+- Khi submit data thì chúng ta sẽ truyền data theo dang array.
+
+
+-->
+<h5 >Link tài liệu liên quan</h5>
+<p>css:</p>
+<a href="https://www.w3schools.com/cssref/pr_class_display.asp">https://www.w3schools.com/cssref/pr_class_display.asp</a>
+
+<p>jquery:</p>
+<a href="https://www.w3schools.com/jquery/jquery_hide_show.asp">https://www.w3schools.com/jquery/jquery_hide_show.asp</a><br/>
+<a href="https://api.jquery.com/parent/">https://api.jquery.com/parent/</a><br/>
+<a href="https://api.jquery.com/children/">https://api.jquery.com/children/</a><br/>
+<a href="https://www.w3schools.com/jquery/jquery_ref_selectors.asp">https://www.w3schools.com/jquery/jquery_ref_selectors.asp</a><br/>
+<a href="https://api.jquery.com/dblclick/">https://api.jquery.com/dblclick/</a><br/>
+<a href=""></a><br/>
+<br />
+<br />
+</body>
+</html>
